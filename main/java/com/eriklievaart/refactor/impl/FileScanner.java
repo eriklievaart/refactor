@@ -1,4 +1,4 @@
-package com.eriklievaart.refactor;
+package com.eriklievaart.refactor.impl;
 
 import java.io.File;
 import java.util.ArrayList;

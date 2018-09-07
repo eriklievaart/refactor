@@ -1,11 +1,11 @@
-package boot;
+package com.eriklievaart.refactor.boot;
 
 import java.awt.BorderLayout;
 import java.io.File;
 
 import javax.swing.JFrame;
 
-import com.eriklievaart.refactor.SearchAndReplacePanel;
+import com.eriklievaart.refactor.impl.SearchAndReplacePanel;
 
 public class Main {
 

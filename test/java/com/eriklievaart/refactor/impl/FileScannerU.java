@@ -1,8 +1,10 @@
-package com.eriklievaart.refactor;
+package com.eriklievaart.refactor.impl;
 
 import junit.framework.Assert;
 
 import org.junit.Test;
+
+import com.eriklievaart.refactor.impl.FileScanner;
 
 public class FileScannerU {
 
