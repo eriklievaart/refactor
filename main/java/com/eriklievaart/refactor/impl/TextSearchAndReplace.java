@@ -24,7 +24,7 @@ public class TextSearchAndReplace {
 	public void search(final String find) throws IOException {
 		System.out.println("\t");
 		System.out.println("searching: " + find);
- 
+
 		for (File file : listFiles()) {
 			List<String> lines = FileTool.readLines(file);
 			for (int i = 0; i < lines.size(); i++) {
@@ -56,5 +56,4 @@ public class TextSearchAndReplace {
 	private List<File> listFiles() {
 		return new FileScanner(root, extensions).exclude(excludes).getFiles();
 	}
-
 }

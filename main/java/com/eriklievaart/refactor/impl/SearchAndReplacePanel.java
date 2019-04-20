@@ -101,5 +101,4 @@ public class SearchAndReplacePanel extends JPanel {
 	private boolean notBlank(String value) {
 		return value != null && value.trim().length() > 0;
 	}
-
 }

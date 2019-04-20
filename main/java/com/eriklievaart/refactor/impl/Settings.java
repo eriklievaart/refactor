@@ -5,13 +5,13 @@ import java.io.IOException;
 
 public class Settings {
 
-	public static String loadExtensions(){
+	public static String loadExtensions() {
 		File file = getSettingsFile();
-		if(file.isFile()) {
+		if (file.isFile()) {
 			try {
 				String data = FileTool.readFileToString(file);
-				if(data.length() > 0) {
-					return data;
+				if (data.length() > 0) {
+					return data.replaceAll("\\s++", " ");
 				}
 			} catch (IOException ioe) {
 				ioe.printStackTrace();
@@ -20,7 +20,7 @@ public class Settings {
 		return "java js json html css xml xsd dtd properties txt kt";
 	}
 
-	public static void storeExtensions(String value){
+	public static void storeExtensions(String value) {
 		File file = getSettingsFile();
 		file.getParentFile().mkdirs();
 		try {
@@ -33,7 +33,7 @@ public class Settings {
 	private static File getSettingsFile() {
 		return new File(getJarDirOrClassDir(), "data/settings.properties");
 	}
-	
+
 	public static String getJarDirOrClassDir() {
 		File file = new File(Settings.class.getProtectionDomain().getCodeSource().getLocation().getPath());
 		if (file.isFile()) {
@@ -41,5 +41,4 @@ public class Settings {
 		}
 		return file.getAbsolutePath();
 	}
-
 }
