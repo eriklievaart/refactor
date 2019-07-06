@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -26,11 +27,18 @@ public class SearchAndReplacePanel extends JPanel {
 		super(new GridLayout(0, 2));
 
 		rootField.setText(root.getAbsolutePath());
-		extField.setText(Settings.loadExtensions());
+
+		loadSettings();
 		addComponents();
 
 		searchButton.addActionListener(createSearchAction());
 		replaceButton.addActionListener(createReplaceAction());
+	}
+
+	private void loadSettings() {
+		List<String> settings = Settings.load();
+		extField.setText(settings.get(0));
+		excludeField.setText(settings.size() < 2 ? "" : settings.get(1));
 	}
 
 	private void addComponents() {
@@ -60,7 +68,7 @@ public class SearchAndReplacePanel extends JPanel {
 					String query = findField.getText();
 					if (notBlank(query)) {
 						textSearchAndReplace().search(query);
-						Settings.storeExtensions(extField.getText());
+						Settings.store(extField.getText(), excludeField.getText());
 					}
 				} catch (IOException ioe) {
 					throw new Error(ioe);

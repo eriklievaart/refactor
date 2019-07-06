@@ -2,29 +2,31 @@ package com.eriklievaart.refactor.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Settings {
 
-	public static String loadExtensions() {
+	public static List<String> load() {
 		File file = getSettingsFile();
 		if (file.isFile()) {
 			try {
-				String data = FileTool.readFileToString(file);
-				if (data.length() > 0) {
-					return data.replaceAll("\\s++", " ");
-				}
+				List<String> lines = FileTool.readLines(file);
+				return lines.stream().map(s -> s.replaceAll("\\s++", " ")).collect(Collectors.toList());
+
 			} catch (IOException ioe) {
 				ioe.printStackTrace();
 			}
 		}
-		return "java js json html css xml xsd dtd properties txt kt";
+		return Arrays.asList("java js json html css xml xsd dtd properties txt kt", "");
 	}
 
-	public static void storeExtensions(String value) {
+	public static void store(String extensions, String excludes) {
 		File file = getSettingsFile();
 		file.getParentFile().mkdirs();
 		try {
-			FileTool.writeStringToFile(file, value.trim());
+			FileTool.writeStringToFile(file, String.join("\n", extensions.trim(), excludes.trim()));
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		}
