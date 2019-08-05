@@ -30,7 +30,7 @@ public class TextSearchAndReplace {
 			for (int i = 0; i < lines.size(); i++) {
 				String line = lines.get(i);
 				if (line.contains(find)) {
-					System.out.println(file + "(" + (i + 1) + "): " + line);
+					System.out.println(getRelativePath(file) + "(" + (i + 1) + "): " + line);
 				}
 			}
 		}
@@ -47,10 +47,14 @@ public class TextSearchAndReplace {
 
 			if (!replaced.equals(contents)) {
 				FileTool.writeStringToFile(file, replaced);
-				System.out.println("File has been modified: " + file);
+				System.out.println("File has been modified: " + getRelativePath(file));
 			}
 		}
 		System.out.println("complete!");
+	}
+
+	private String getRelativePath(File file) {
+		return file.getAbsolutePath().substring(root.getAbsolutePath().length() + 1);
 	}
 
 	private List<File> listFiles() {

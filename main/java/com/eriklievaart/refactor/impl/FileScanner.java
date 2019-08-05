@@ -20,10 +20,10 @@ public class FileScanner {
 	}
 
 	public List<File> getFiles() {
-		return getFiles(root, ext);
+		return getFiles(root);
 	}
 
-	private List<File> getFiles(File file, Set<String> ext) {
+	private List<File> getFiles(File file) {
 		if (excludes.contains(file.getName())) {
 			return Collections.emptyList();
 		}
@@ -32,11 +32,11 @@ public class FileScanner {
 				return Arrays.asList(file);
 			}
 		}
-		List<File> files = new ArrayList<File>();
+		List<File> files = new ArrayList<>();
 		if (file.isDirectory()) {
 			for (File child : file.listFiles()) {
 				if (!child.getName().equals(".hg")) {
-					files.addAll(getFiles(child, ext));
+					files.addAll(getFiles(child));
 				}
 			}
 		}
@@ -44,7 +44,7 @@ public class FileScanner {
 	}
 
 	private Set<String> splitCommaSpace(String raw) {
-		Set<String> set = new HashSet<String>();
+		Set<String> set = new HashSet<>();
 		for (String entry : raw.split("[, ]++")) {
 			if (entry.trim().length() > 0) {
 				set.add(entry.trim());

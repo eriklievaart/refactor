@@ -19,14 +19,16 @@ public class Settings {
 				ioe.printStackTrace();
 			}
 		}
-		return Arrays.asList("java js json html css xml xsd dtd properties txt kt", "");
+		String home = System.getProperty("user.home");
+		String extensions = "java js json html css xml xsd dtd properties txt kt";
+		return Arrays.asList(home, extensions, "");
 	}
 
-	public static void store(String extensions, String excludes) {
+	public static void store(String root, String extensions, String excludes) {
 		File file = getSettingsFile();
 		file.getParentFile().mkdirs();
 		try {
-			FileTool.writeStringToFile(file, String.join("\n", extensions.trim(), excludes.trim()));
+			FileTool.writeStringToFile(file, String.join("\n", root.trim(), extensions.trim(), excludes.trim()));
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		}

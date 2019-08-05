@@ -23,10 +23,8 @@ public class SearchAndReplacePanel extends JPanel {
 	private JButton searchButton = new JButton("Search");
 	private JButton replaceButton = new JButton("Replace");
 
-	public SearchAndReplacePanel(File root) {
+	public SearchAndReplacePanel() {
 		super(new GridLayout(0, 2));
-
-		rootField.setText(root.getAbsolutePath());
 
 		loadSettings();
 		addComponents();
@@ -37,8 +35,9 @@ public class SearchAndReplacePanel extends JPanel {
 
 	private void loadSettings() {
 		List<String> settings = Settings.load();
-		extField.setText(settings.get(0));
-		excludeField.setText(settings.size() < 2 ? "" : settings.get(1));
+		rootField.setText(settings.get(0));
+		extField.setText(settings.get(1));
+		excludeField.setText(settings.size() < 3 ? "" : settings.get(2));
 	}
 
 	private void addComponents() {
@@ -68,13 +67,12 @@ public class SearchAndReplacePanel extends JPanel {
 					String query = findField.getText();
 					if (notBlank(query)) {
 						textSearchAndReplace().search(query);
-						Settings.store(extField.getText(), excludeField.getText());
 					}
 				} catch (IOException ioe) {
 					throw new Error(ioe);
 				}
+				storeSettings();
 			}
-
 		};
 	}
 
@@ -90,8 +88,13 @@ public class SearchAndReplacePanel extends JPanel {
 				} catch (IOException ioe) {
 					throw new Error(ioe);
 				}
+				storeSettings();
 			}
 		};
+	}
+
+	private void storeSettings() {
+		Settings.store(rootField.getText(), extField.getText(), excludeField.getText());
 	}
 
 	private TextSearchAndReplace textSearchAndReplace() {
@@ -108,5 +111,9 @@ public class SearchAndReplacePanel extends JPanel {
 
 	private boolean notBlank(String value) {
 		return value != null && value.trim().length() > 0;
+	}
+
+	public void setSearchRoot(File root) {
+		rootField.setText(root.getAbsolutePath());
 	}
 }
