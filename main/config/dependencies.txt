@@ -1,4 +1,5 @@
 
 [test]
+toolkit @local @snapshot
 junit junit 4.7
 

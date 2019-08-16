@@ -37,13 +37,13 @@ public class TextSearchAndReplace {
 		System.out.println("complete!");
 	}
 
-	public void replace(final String find, final String replace) throws IOException {
+	public void replace(final String find, final String replace, boolean unix) throws IOException {
 		System.out.println("\t");
 		System.out.println("replacing : " + find + " => " + replace);
 
 		for (File file : listFiles()) {
 			String contents = FileTool.readFileToString(file);
-			String replaced = contents.replace(find, replace);
+			String replaced = FileTool.replaceNewLines(contents.replace(find, replace), unix);
 
 			if (!replaced.equals(contents)) {
 				FileTool.writeStringToFile(file, replaced);

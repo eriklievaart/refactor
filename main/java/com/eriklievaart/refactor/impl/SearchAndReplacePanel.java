@@ -7,9 +7,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 public class SearchAndReplacePanel extends JPanel {
@@ -19,6 +22,8 @@ public class SearchAndReplacePanel extends JPanel {
 	private JTextField excludeField = new JTextField();
 	private JTextField findField = new JTextField();
 	private JTextField replaceField = new JTextField();
+	private JRadioButton unixRadio = new JRadioButton("unix");
+	private JRadioButton windowsRadio = new JRadioButton("windows");
 
 	private JButton searchButton = new JButton("Search");
 	private JButton replaceButton = new JButton("Replace");
@@ -41,18 +46,33 @@ public class SearchAndReplacePanel extends JPanel {
 	}
 
 	private void addComponents() {
-		add(new JLabel("Root dir:"));
-		add(rootField);
-		add(new JLabel("File Extensions:"));
-		add(extField);
-		add(new JLabel("Exclude:"));
-		add(excludeField);
-		add(new JLabel("Find:"));
-		add(findField);
-		add(new JLabel("Replace with:"));
-		add(replaceField);
+		addComponentWithLabel("Root dir:", rootField);
+		addComponentWithLabel("File Extensions:", extField);
+		addComponentWithLabel("Exclude:", excludeField);
+		addComponentWithLabel("Find:", findField);
+		addComponentWithLabel("Replace with:", replaceField);
+		addComponentWithLabel("Line endings:", createLineEndingsPanel());
 		add(searchButton);
 		add(replaceButton);
+	}
+
+	private void addComponentWithLabel(String label, JComponent component) {
+		add(new JLabel(label));
+		add(component);
+	}
+
+	private JPanel createLineEndingsPanel() {
+		JPanel lePanel = new JPanel(new GridLayout(1, 0));
+
+		lePanel.add(unixRadio);
+		lePanel.add(windowsRadio);
+
+		ButtonGroup group = new ButtonGroup();
+		group.add(unixRadio);
+		group.add(windowsRadio);
+
+		unixRadio.setSelected(true);
+		return lePanel;
 	}
 
 	public JButton getSearchButton() {
@@ -83,7 +103,8 @@ public class SearchAndReplacePanel extends JPanel {
 				try {
 					String query = findField.getText();
 					if (notBlank(query)) {
-						textSearchAndReplace().replace(findField.getText(), replaceField.getText());
+						boolean unix = unixRadio.isSelected();
+						textSearchAndReplace().replace(findField.getText(), replaceField.getText(), unix);
 					}
 				} catch (IOException ioe) {
 					throw new Error(ioe);
