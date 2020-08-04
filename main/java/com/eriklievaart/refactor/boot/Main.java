@@ -10,8 +10,9 @@ import com.eriklievaart.refactor.impl.SearchAndReplacePanel;
 public class Main {
 
 	public static void main(final String[] args) {
-		JFrame frame = new JFrame("Search and replace text");
+		LookAndFeel.init();
 
+		JFrame frame = new JFrame("Search and replace text");
 		SearchAndReplacePanel panel = new SearchAndReplacePanel();
 		if (args.length > 0) {
 			panel.setSearchRoot(new File(args[0]));
