@@ -7,6 +7,10 @@ import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 
 public class LookAndFeel {
+	private static Color dark = new Color(64, 64, 64);
+	private static Color text = new Color(236, 236, 236);
+	private static Color caret = new Color(255, 255, 0);
+	private static Color input = new Color(48, 71, 94);
 
 	public static void init() {
 		UIDefaults defaults = UIManager.getLookAndFeelDefaults();
@@ -23,11 +27,6 @@ public class LookAndFeel {
 	}
 
 	private static void setupColors(UIDefaults defaults) {
-		Color dark = new Color(64, 64, 64);
-		Color text = new Color(236, 236, 236);
-		Color caret = new Color(255, 255, 0);
-		Color input = new Color(48, 71, 94);
-
 		defaults.put("List.background", dark);
 		defaults.put("List.foreground", text);
 		defaults.put("TextField.background", input);
