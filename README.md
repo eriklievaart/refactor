@@ -2,11 +2,12 @@
 # refactor
 
 A minimal refactoring tool.
-Simply download the release and start run.bat or run.sh.
+Simply download, unpack and run the release (right hand side of page).
+Use run.bat or run.sh to start the gui, or `java -jar refactor.jar`.
 This will open a window where you can enter search and replace terms.
-Click search to find matches and replace to apply the search and replace operations.
+Click search to find matches and replace to modify the matching files.
 
-features
+features:
 * search all files matching a list of file extensions
 * replace all occurences of an exact string
 * regex search and replace
