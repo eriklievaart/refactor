@@ -1,17 +1,19 @@
-package com.eriklievaart.refactor.impl;
+package com.eriklievaart.refactor.file;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
-public class TextSearchAndReplace {
+import com.eriklievaart.refactor.text.Replacer;
+
+public class FileSearchAndReplace {
 
 	private final File root;
 	private final String extensions;
 	private String excludes;
 
-	public TextSearchAndReplace(File root, String extensions, String exclude) {
+	public FileSearchAndReplace(File root, String extensions, String exclude) {
 		Objects.requireNonNull(root);
 		Objects.requireNonNull(extensions);
 		Objects.requireNonNull(exclude);
@@ -21,15 +23,15 @@ public class TextSearchAndReplace {
 		this.excludes = exclude;
 	}
 
-	public void search(final String find) throws IOException {
+	public void search(final Replacer replacer) throws IOException {
 		System.out.println("\t");
-		System.out.println("searching: " + find);
+		System.out.println("searching: " + replacer);
 
 		for (File file : listFiles()) {
 			List<String> lines = FileTool.readLines(file);
 			for (int i = 0; i < lines.size(); i++) {
 				String line = lines.get(i);
-				if (line.contains(find)) {
+				if (replacer.matches(line)) {
 					System.out.println(getRelativePath(file) + "(" + (i + 1) + "): " + line);
 				}
 			}
@@ -37,13 +39,13 @@ public class TextSearchAndReplace {
 		System.out.println("complete!");
 	}
 
-	public void replace(final String find, final String replace, boolean unix) throws IOException {
+	public void replace(Replacer replace, boolean unix) throws IOException {
 		System.out.println("\t");
-		System.out.println("replacing : " + find + " => " + replace);
+		System.out.println("replacing : " + replace.toString());
 
 		for (File file : listFiles()) {
 			String contents = FileTool.readFileToString(file);
-			String replaced = FileTool.replaceNewLines(contents.replace(find, replace), unix);
+			String replaced = FileTool.replaceNewLines(replace.in(contents), unix);
 
 			if (!replaced.equals(contents)) {
 				FileTool.writeStringToFile(file, replaced);

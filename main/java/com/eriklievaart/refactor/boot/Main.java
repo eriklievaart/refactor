@@ -5,7 +5,8 @@ import java.io.File;
 
 import javax.swing.JFrame;
 
-import com.eriklievaart.refactor.impl.SearchAndReplacePanel;
+import com.eriklievaart.refactor.ui.LookAndFeel;
+import com.eriklievaart.refactor.ui.SearchAndReplacePanel;
 
 public class Main {
 

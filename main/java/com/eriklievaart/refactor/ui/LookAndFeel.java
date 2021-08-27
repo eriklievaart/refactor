@@ -1,4 +1,4 @@
-package com.eriklievaart.refactor.boot;
+package com.eriklievaart.refactor.ui;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -27,17 +27,17 @@ public class LookAndFeel {
 	}
 
 	private static void setupColors(UIDefaults defaults) {
-		defaults.put("List.background", dark);
-		defaults.put("List.foreground", text);
+		defaults.put("Label.background", dark);
+		defaults.put("Label.foreground", text);
+		defaults.put("Panel.background", dark);
+		defaults.put("Panel.foreground", text);
 		defaults.put("TextField.background", input);
 		defaults.put("TextField.foreground", text);
 		defaults.put("TextField.caretForeground", caret);
 		defaults.put("RadioButton.background", input);
 		defaults.put("RadioButton.foreground", text);
-		defaults.put("Label.background", dark);
-		defaults.put("Label.foreground", text);
-		defaults.put("Panel.background", dark);
-		defaults.put("Panel.foreground", text);
+		defaults.put("CheckBox.background", input);
+		defaults.put("CheckBox.foreground", text);
 		defaults.put("Button.background", Color.gray);
 	}
 }

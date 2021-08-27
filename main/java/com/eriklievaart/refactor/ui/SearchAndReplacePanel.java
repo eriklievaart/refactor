@@ -1,4 +1,4 @@
-package com.eriklievaart.refactor.impl;
+package com.eriklievaart.refactor.ui;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -9,11 +9,18 @@ import java.util.List;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+
+import com.eriklievaart.refactor.file.FileSearchAndReplace;
+import com.eriklievaart.refactor.file.Settings;
+import com.eriklievaart.refactor.text.RegexReplacer;
+import com.eriklievaart.refactor.text.Replacer;
+import com.eriklievaart.refactor.text.StringReplacer;
 
 public class SearchAndReplacePanel extends JPanel {
 
@@ -24,6 +31,7 @@ public class SearchAndReplacePanel extends JPanel {
 	private JTextField replaceField = new JTextField();
 	private JRadioButton unixRadio = new JRadioButton("unix");
 	private JRadioButton windowsRadio = new JRadioButton("windows");
+	private JCheckBox regexCheckBox = new JCheckBox("regex");
 
 	private JButton searchButton = new JButton("Search");
 	private JButton replaceButton = new JButton("Replace");
@@ -52,6 +60,7 @@ public class SearchAndReplacePanel extends JPanel {
 		addComponentWithLabel("Find:", findField);
 		addComponentWithLabel("Replace with:", replaceField);
 		addComponentWithLabel("Line endings:", createLineEndingsPanel());
+		addComponentWithLabel("Regex:", regexCheckBox);
 		add(searchButton);
 		add(replaceButton);
 	}
@@ -86,7 +95,7 @@ public class SearchAndReplacePanel extends JPanel {
 				try {
 					String query = findField.getText();
 					if (notBlank(query)) {
-						textSearchAndReplace().search(query);
+						textSearch();
 					}
 				} catch (IOException ioe) {
 					throw new Error(ioe);
@@ -103,8 +112,7 @@ public class SearchAndReplacePanel extends JPanel {
 				try {
 					String query = findField.getText();
 					if (notBlank(query)) {
-						boolean unix = unixRadio.isSelected();
-						textSearchAndReplace().replace(findField.getText(), replaceField.getText(), unix);
+						textSearchAndReplace();
 					}
 				} catch (IOException ioe) {
 					throw new Error(ioe);
@@ -118,8 +126,21 @@ public class SearchAndReplacePanel extends JPanel {
 		Settings.store(rootField.getText(), extField.getText(), excludeField.getText());
 	}
 
-	private TextSearchAndReplace textSearchAndReplace() {
-		return new TextSearchAndReplace(createRoot(), extField.getText(), excludeField.getText());
+	private void textSearch() throws IOException {
+		new FileSearchAndReplace(createRoot(), extField.getText(), excludeField.getText()).search(getReplacer());
+	}
+
+	private void textSearchAndReplace() throws IOException {
+		FileSearchAndReplace tsar = new FileSearchAndReplace(createRoot(), extField.getText(), excludeField.getText());
+		tsar.replace(getReplacer(), unixRadio.isSelected());
+	}
+
+	private Replacer getReplacer() {
+		if (regexCheckBox.isSelected()) {
+			return new RegexReplacer(findField.getText(), replaceField.getText());
+		} else {
+			return new StringReplacer(findField.getText(), replaceField.getText());
+		}
 	}
 
 	private File createRoot() {
