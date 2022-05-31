@@ -29,6 +29,7 @@ public class SearchAndReplacePanel extends JPanel {
 	private JTextField excludeField = new JTextField();
 	private JTextField findField = new JTextField();
 	private JTextField replaceField = new JTextField();
+	private JRadioButton unchangedRadio = new JRadioButton("unchanged");
 	private JRadioButton unixRadio = new JRadioButton("unix");
 	private JRadioButton windowsRadio = new JRadioButton("windows");
 	private JCheckBox regexCheckBox = new JCheckBox("regex");
@@ -73,14 +74,16 @@ public class SearchAndReplacePanel extends JPanel {
 	private JPanel createLineEndingsPanel() {
 		JPanel lePanel = new JPanel(new GridLayout(1, 0));
 
+		lePanel.add(unchangedRadio);
 		lePanel.add(unixRadio);
 		lePanel.add(windowsRadio);
 
 		ButtonGroup group = new ButtonGroup();
+		group.add(unchangedRadio);
 		group.add(unixRadio);
 		group.add(windowsRadio);
 
-		unixRadio.setSelected(true);
+		unchangedRadio.setSelected(true);
 		return lePanel;
 	}
 
@@ -132,7 +135,7 @@ public class SearchAndReplacePanel extends JPanel {
 
 	private void textSearchAndReplace() throws IOException {
 		FileSearchAndReplace tsar = new FileSearchAndReplace(createRoot(), extField.getText(), excludeField.getText());
-		tsar.replace(getReplacer(), unixRadio.isSelected());
+		tsar.replace(getReplacer(), unchangedRadio.isSelected() ? null : unixRadio.isSelected());
 	}
 
 	private Replacer getReplacer() {

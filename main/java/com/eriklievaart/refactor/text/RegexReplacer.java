@@ -11,7 +11,7 @@ public class RegexReplacer implements Replacer {
 	public RegexReplacer(String find, String replace) {
 		this.find = find;
 		this.replace = replace;
-		this.pattern = pattern.compile(find);
+		this.pattern = Pattern.compile(find);
 	}
 
 	@Override

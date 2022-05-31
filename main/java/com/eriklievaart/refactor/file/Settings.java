@@ -7,12 +7,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Settings {
+	private static final String EXTENSIONS = "java js json html css xml xsd dtd properties txt kt";
 
 	public static List<String> load() {
 		File file = getSettingsFile();
 		if (file.isFile()) {
 			try {
 				List<String> lines = FileTool.readLines(file);
+				if (lines.size() == 3 && lines.get(1).isBlank()) {
+					lines.add(1, EXTENSIONS);
+					lines.remove(2);
+				}
 				return lines.stream().map(s -> s.replaceAll("\\s++", " ")).collect(Collectors.toList());
 
 			} catch (IOException ioe) {
@@ -20,8 +25,7 @@ public class Settings {
 			}
 		}
 		String home = System.getProperty("user.home");
-		String extensions = "java js json html css xml xsd dtd properties txt kt";
-		return Arrays.asList(home, extensions, "");
+		return Arrays.asList(home, EXTENSIONS, "");
 	}
 
 	public static void store(String root, String extensions, String excludes) {

@@ -39,15 +39,17 @@ public class FileSearchAndReplace {
 		System.out.println("complete!");
 	}
 
-	public void replace(Replacer replace, boolean unix) throws IOException {
+	public void replace(Replacer replace, Boolean unix) throws IOException {
 		System.out.println("\t");
 		System.out.println("replacing : " + replace.toString());
 
 		for (File file : listFiles()) {
-			String contents = FileTool.readFileToString(file);
-			String replaced = FileTool.replaceNewLines(replace.in(contents), unix);
-
-			if (!replaced.equals(contents)) {
+			String original = FileTool.readFileToString(file);
+			String replaced = replace.in(original);
+			if (unix != null) {
+				replaced = FileTool.replaceNewLines(replaced, unix);
+			}
+			if (!replaced.equals(original)) {
 				FileTool.writeStringToFile(file, replaced);
 				System.out.println("File has been modified: " + getRelativePath(file));
 			}
